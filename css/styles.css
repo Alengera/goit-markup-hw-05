@@ -17,6 +17,8 @@
   --subtle-text-color: #8e8f99;
   --background-color-logo-dark: rgba(255, 255, 255, 0.1);
   --footer-logo-active: #31d0aa;
+  --timing-function: cubic-bezier (0.4, 0, 0.2, 1);
+  --background-color-modal: rgba(46, 47, 66, 0.4);
 }
 body {
   font-family: var(--primary-font);
@@ -115,6 +117,9 @@ button {
 }
 
 .menu-item {
+  position: relative;
+  display: block;
+
   padding-top: 24px;
   padding-bottom: 24px;
 }
@@ -123,6 +128,10 @@ button {
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: 0.02em;
+
+  transition-property: color;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
 }
 .menu-link:hover,
 .menu-link:focus {
@@ -131,7 +140,23 @@ button {
 .current {
   color: var(--accent-color);
 }
-
+.current::after {
+  content: '';
+  position: absolute;
+  display: block;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--accent-color);
+}
+.email,
+.phone-number {
+  transition-property: color;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
+}
 .email:hover,
 .email:focus {
   color: var(--accent-color);
@@ -182,8 +207,12 @@ button {
 }
 
 .hero-button {
+  transition-property: background-color;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
   display: inline-block;
   text-align: center;
+
   padding: 16px 32px;
   min-width: 169px;
   border: 1px solid transparent;
@@ -193,12 +222,14 @@ button {
   line-height: 1.5;
   color: var(--background-color);
   background-color: var(--brand-color);
-  cursor: pointer;
+
   border-radius: 4px;
   letter-spacing: 0.04em;
 }
-.hero-button:hover {
+.hero-button:hover,
+.hero-button:focus {
   background-color: var(--accent-color);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 /* ======FEATURES/SECTION 1======== */
@@ -207,6 +238,7 @@ button {
   padding-bottom: 120px;
 }
 .features-box {
+  width: 264px;
   height: 112px;
   margin-bottom: 8px;
   display: flex;
@@ -301,6 +333,10 @@ button {
   background-color: var(--brand-color);
   fill: var(--background-color);
   border-radius: 50%;
+
+  transition-property: background-color;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
 }
 .socials-link:hover,
 .socials-link:focus {
@@ -336,6 +372,10 @@ button {
   border: 1px solid var(--subtle-text-color);
   border-radius: 4px;
   fill: var(--subtle-text-color);
+
+  transition-property: fill, border-color;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
 }
 
 .customers-link:hover,
@@ -385,13 +425,16 @@ button {
 .socials-link-footer {
   background-color: var(--background-color-logo-dark);
   fill: var(--subtle-background-color);
+
+  transition-property: background-color;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
 }
-.socials-link-footer:hover {
-  background-color: var(--footer-logo-active);
-}
+.socials-link-footer:hover,
 .socials-link-footer:focus {
   background-color: var(--footer-logo-active);
 }
+
 .socials-icon-footer {
   width: 24px;
   height: 24px;
@@ -424,6 +467,10 @@ button {
   align-items: center;
   text-align: center;
   letter-spacing: 0.04em;
+
+  transition-property: color, background-color, box-shadow;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
 }
 .portfolio-button:hover,
 .portfolio-button:focus {
@@ -455,6 +502,7 @@ button {
   border-right: 1px solid var(--subtle-background-color);
   border-bottom: 1px solid var(--subtle-background-color);
   border-left: 1px solid var(--subtle-background-color);
+  box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08);
 }
 .portfolio-list-item {
   flex-basis: calc((100% - 48px) / 3);
@@ -463,8 +511,112 @@ button {
 .portfolio-link {
   display: block;
 }
+.portfolio-link:hover .overlay,
+.portfolio-link:focus .overlay {
+  transform: translate(0, 0);
+}
+
 .portfolio-link:hover,
 .portfolio-link:focus {
   box-shadow: 0px 1px 6px rgba(46, 47, 66, 0.08),
     0px 1px 1px rgba(46, 47, 66, 0.16), 0px 2px 1px rgba(46, 47, 66, 0.08);
+}
+
+.portfolio-link-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+.overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  transform: translate(0%, 100%);
+  transition-property: transform;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
+
+  width: 100%;
+  height: 100%;
+  padding-top: 40px;
+  padding-left: 32px;
+  padding-right: 32px;
+
+  background-color: var(--brand-color);
+  color: var(--team-background-color);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+/* ===========MODAL WINDOW============*/
+.backdrop {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-color-modal);
+  transition-property: opacity, visibility;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
+}
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: auto;
+
+  width: 408px;
+  height: 576px;
+  background-color: var(--background-color);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 1px 3px rgba(0, 0, 0, 0.12),
+    0px 2px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.modal-close-button {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  top: 8px;
+  right: 24px;
+  padding: 0;
+  background-color: var(--subtle-background-color);
+  stroke: var(--primary-text-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.2);
+
+  transition-property: fill, background-color, stroke;
+  transition-duration: 250ms;
+  transition-timing-function: var(--timing-function);
+}
+
+.modal-close-icon {
+  background-color: var(--subtle-background-color);
+  fill: var(--primary-text-color);
+  stroke: var(--primary-text-color);
+}
+
+.modal-close-button:hover,
+.modal-close-button:focus {
+  background-color: var(--accent-color);
+  fill: var(--accent-color);
+  stroke: var(--background-color);
+}
+
+.modal-close-button:hover .modal-close-icon,
+.modal-close-button:focus .modal-close-icon {
+  background-color: var(--accent-color);
+  fill: var(--background-color);
+}
+.backdrop.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
